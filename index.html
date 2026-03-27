@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Network Troubleshooting Navigator — Dartmouth ITC</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #fff; color: #1a1a1a; padding: 1.5rem; max-width: 860px; margin: 0 auto; }
+  h1 { font-size: 20px; font-weight: 600; margin-bottom: 4px; color: #1a1a1a; }
+  .subtitle { font-size: 14px; color: #555; margin-bottom: 1.5rem; }
+  .step-label { font-size: 11px; font-weight: 600; color: #3B6D11; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 8px; }
+  .question { font-size: 17px; font-weight: 600; margin-bottom: 1rem; color: #1a1a1a; }
+  .options { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 10px; }
+  .opt-btn {
+    background: #fff;
+    border: 1px solid #d0d0d0;
+    border-radius: 10px;
+    padding: 14px 16px;
+    cursor: pointer;
+    text-align: left;
+    transition: border-color 0.15s, background 0.15s;
+  }
+  .opt-btn:hover { border-color: #639922; background: #EAF3DE; }
+  .opt-btn .icon { font-size: 18px; margin-bottom: 6px; display: block; }
+  .opt-btn .label { font-size: 14px; font-weight: 600; color: #1a1a1a; display: block; }
+  .opt-btn .desc { font-size: 12px; color: #666; margin-top: 2px; display: block; }
+  .result-card {
+    background: #fff;
+    border: 1px solid #d0d0d0;
+    border-radius: 10px;
+    padding: 1.25rem;
+    margin-bottom: 12px;
+    border-left: 3px solid #d0d0d0;
+  }
+  .result-card.primary { border-left-color: #639922; }
+  .result-card.secondary { border-left-color: #97C459; }
+  .tool-badge {
+    display: inline-block;
+    background: #EAF3DE;
+    color: #3B6D11;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 6px;
+    margin-bottom: 8px;
+  }
+  .tool-badge.secondary { background: #C0DD97; color: #27500A; }
+  .result-card h3 { font-size: 15px; font-weight: 600; margin-bottom: 6px; color: #1a1a1a; }
+  .result-card p { font-size: 14px; color: #555; line-height: 1.6; }
+  .result-card .action { font-size: 13px; color: #3B6D11; font-weight: 600; margin-top: 8px; }
+  .back-btn {
+    background: #fff;
+    border: 1px solid #d0d0d0;
+    border-radius: 6px;
+    padding: 8px 16px;
+    font-size: 13px;
+    cursor: pointer;
+    color: #555;
+    margin-top: 1rem;
+  }
+  .back-btn:hover { background: #f5f5f5; }
+  .restart-btn {
+    background: #639922;
+    border: none;
+    border-radius: 6px;
+    padding: 8px 18px;
+    font-size: 13px;
+    cursor: pointer;
+    color: #fff;
+    font-weight: 600;
+    margin-top: 1rem;
+    margin-left: 8px;
+  }
+  .restart-btn:hover { background: #3B6D11; }
+  .progress { display: flex; gap: 6px; margin-bottom: 1.5rem; align-items: center; }
+  .prog-dot { width: 8px; height: 8px; border-radius: 50%; background: #C0DD97; }
+  .prog-dot.active { background: #639922; }
+  .prog-dot.done { background: #97C459; }
+  .section { display: none; }
+  .section.active { display: block; }
+  .breadcrumb {
+    font-size: 13px;
+    color: #555;
+    margin-bottom: 1.25rem;
+    padding: 8px 12px;
+    background: #f5f5f5;
+    border-radius: 6px;
+  }
+  .breadcrumb span { color: #3B6D11; font-weight: 600; }
+  .header-row { display: flex; align-items: center; gap: 10px; margin-bottom: 4px; }
+  .logo-circle { width: 30px; height: 30px; border-radius: 50%; background: #EAF3DE; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+</style>
+</head>
+<body>
+
+<div class="header-row">
+  <div class="logo-circle">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+      <circle cx="8" cy="8" r="3" fill="#639922"/>
+      <line x1="8" y1="1" x2="8" y2="5" stroke="#639922" stroke-width="1.5"/>
+      <line x1="8" y1="11" x2="8" y2="15" stroke="#639922" stroke-width="1.5"/>
+      <line x1="1" y1="8" x2="5" y2="8" stroke="#639922" stroke-width="1.5"/>
+      <line x1="11" y1="8" x2="15" y2="8" stroke="#639922" stroke-width="1.5"/>
+    </svg>
+  </div>
+  <h1>Network Troubleshooting Navigator</h1>
+</div>
+<p class="subtitle">Dartmouth ITC — Pick what info you have and we'll point you to the right tool.</p>
+
+<div id="progress" class="progress">
+  <div class="prog-dot active" id="d0"></div>
+  <div class="prog-dot" id="d1"></div>
+  <div class="prog-dot" id="d2"></div>
+</div>
+
+<!-- Step 0 -->
+<div id="s0" class="section active">
+  <div class="step-label">Step 1 of 2</div>
+  <div class="question">What information do you have about the problem?</div>
+  <div class="options">
+    <button class="opt-btn" onclick="choose('mac')">
+      <span class="icon">🔢</span>
+      <span class="label">MAC address</span>
+      <span class="desc">You know the device's hardware ID</span>
+    </button>
+    <button class="opt-btn" onclick="choose('ip')">
+      <span class="icon">🌐</span>
+      <span class="label">IP address</span>
+      <span class="desc">You have a specific IP to investigate</span>
+    </button>
+    <button class="opt-btn" onclick="choose('location')">
+      <span class="icon">📍</span>
+      <span class="label">Building / room</span>
+      <span class="desc">You know where the issue is</span>
+    </button>
+    <button class="opt-btn" onclick="choose('hostname')">
+      <span class="icon">💻</span>
+      <span class="label">Hostname / device name</span>
+      <span class="desc">You know the device name</span>
+    </button>
+    <button class="opt-btn" onclick="choose('time')">
+      <span class="icon">🕐</span>
+      <span class="label">Time + location</span>
+      <span class="desc">Intermittent issue — you know when & where</span>
+    </button>
+    <button class="opt-btn" onclick="choose('wifi')">
+      <span class="icon">📶</span>
+      <span class="label">WiFi / wireless issue</span>
+      <span class="desc">User can't connect or has slow wireless</span>
+    </button>
+    <button class="opt-btn" onclick="choose('vlan')">
+      <span class="icon">🔧</span>
+      <span class="label">VLAN change needed</span>
+      <span class="desc">Need to move a device to a different network</span>
+    </button>
+    <button class="opt-btn" onclick="choose('switch')">
+      <span class="icon">🔌</span>
+      <span class="label">Switch / port info</span>
+      <span class="desc">You know which switch or port is involved</span>
+    </button>
+  </div>
+</div>
+
+<!-- Step 1 -->
+<div id="s1" class="section">
+  <div id="s1-breadcrumb" class="breadcrumb"></div>
+  <div class="step-label">Step 2 of 2</div>
+  <div id="s1-question" class="question"></div>
+  <div id="s1-options" class="options"></div>
+  <button class="back-btn" onclick="goBack(0)">← Back</button>
+</div>
+
+<!-- Step 2: Result -->
+<div id="s2" class="section">
+  <div id="s2-breadcrumb" class="breadcrumb"></div>
+  <div class="step-label">Recommended tool(s)</div>
+  <div id="s2-results"></div>
+  <div>
+    <button class="back-btn" onclick="goBack(1)">← Back</button>
+    <button class="restart-btn" onclick="restart()">Start over</button>
+  </div>
+</div>
+
+<script>
+const tools = {
+  infoblox: { name: "Infoblox", desc: "DNS/DHCP management and IP address tracking. Best for finding which device owns an IP or MAC, checking lease history, and resolving DNS issues." },
+  netbox:   { name: "NetBox",   desc: "The network source of truth. Best for finding where a device lives in the network — building, rack, switch port assignments, and IP allocations." },
+  akips:    { name: "AKIPS",    desc: "Network monitoring and historical traffic data. Best for checking if a device was reachable, reviewing historical uptime, and identifying traffic anomalies." },
+  mist:     { name: "Mist Admin Portal", desc: "Wireless network management. Best for diagnosing WiFi connectivity issues, checking AP health, and reviewing wireless client event logs." },
+  slackbot: { name: "Slackbot (VLAN tool)", desc: "Deploy VLAN changes via Slack. Use the designated Slack channel/command to move a device to a different network segment." }
+};
+
+function makeResult(toolKey, priority, action) {
+  const t = tools[toolKey];
+  const card = document.createElement('div');
+  card.className = 'result-card ' + priority;
+  card.innerHTML = `
+    <div class="tool-badge ${priority === 'secondary' ? 'secondary' : ''}">${priority === 'primary' ? '★ Start here' : 'Also check'}</div>
+    <h3>${t.name}</h3>
+    <p>${t.desc}</p>
+    <p class="action">→ ${action}</p>
+  `;
+  return card;
+}
+
+const flows = {
+  mac: {
+    question: "What are you trying to find out?",
+    breadcrumb: "MAC address",
+    options: [
+      { label: "What IP does this device have?", result: [
+        { tool: 'infoblox', priority: 'primary', action: 'Search the MAC in Infoblox to find its current/last IP lease and hostname.' },
+        { tool: 'netbox', priority: 'secondary', action: 'Cross-check NetBox for the device record and assigned IP.' }
+      ]},
+      { label: "What switch port is it on?", result: [
+        { tool: 'netbox', priority: 'primary', action: 'Look up the MAC in NetBox to find switch/port assignment.' },
+        { tool: 'akips', priority: 'secondary', action: 'Use AKIPS to confirm the port is up and check recent activity.' }
+      ]},
+      { label: "Is the device currently on the network?", result: [
+        { tool: 'infoblox', priority: 'primary', action: 'Check DHCP lease status in Infoblox — active lease = device is online.' },
+        { tool: 'akips', priority: 'secondary', action: 'Check AKIPS for recent ping/availability data for that device.' }
+      ]}
+    ]
+  },
+  ip: {
+    question: "What are you trying to find out?",
+    breadcrumb: "IP address",
+    options: [
+      { label: "Who/what device owns this IP?", result: [
+        { tool: 'infoblox', priority: 'primary', action: 'Look up the IP in Infoblox to see the DNS record, MAC, and lease history.' },
+        { tool: 'netbox', priority: 'secondary', action: 'Check NetBox for the device record tied to that IP.' }
+      ]},
+      { label: "Is this IP reachable / having issues?", result: [
+        { tool: 'akips', priority: 'primary', action: 'Search the IP in AKIPS to see uptime history, packet loss, and traffic graphs.' },
+        { tool: 'infoblox', priority: 'secondary', action: 'Confirm the IP assignment is correct in Infoblox.' }
+      ]},
+      { label: "What VLAN or subnet is this on?", result: [
+        { tool: 'netbox', priority: 'primary', action: 'Look up the IP in NetBox to see its assigned subnet, VLAN, and site info.' },
+        { tool: 'infoblox', priority: 'secondary', action: 'Check Infoblox for DHCP scope and network range details.' }
+      ]}
+    ]
+  },
+  location: {
+    question: "What kind of problem is it?",
+    breadcrumb: "Building / room",
+    options: [
+      { label: "Wired network issue", result: [
+        { tool: 'netbox', priority: 'primary', action: 'Look up the building/room in NetBox to find the relevant switch and port assignments.' },
+        { tool: 'akips', priority: 'secondary', action: 'Check that switch in AKIPS for interface errors, drops, or downtime.' }
+      ]},
+      { label: "Wireless / WiFi issue", result: [
+        { tool: 'mist', priority: 'primary', action: 'Find the AP serving that room in Mist and check its health, client list, and event log.' },
+        { tool: 'akips', priority: 'secondary', action: 'Check AKIPS to confirm the AP or upstream switch is reachable.' }
+      ]},
+      { label: "Multiple users affected in same area", result: [
+        { tool: 'akips', priority: 'primary', action: 'Check AKIPS for the switch/AP serving that area — look for interface errors or outages.' },
+        { tool: 'mist', priority: 'secondary', action: 'Check Mist for AP issues if wireless users are affected.' },
+        { tool: 'netbox', priority: 'secondary', action: 'Use NetBox to identify all network gear in that building.' }
+      ]}
+    ]
+  },
+  hostname: {
+    question: "What are you trying to find out?",
+    breadcrumb: "Hostname / device name",
+    options: [
+      { label: "What IP does this device have?", result: [
+        { tool: 'infoblox', priority: 'primary', action: 'Search the hostname in Infoblox DNS to resolve its IP and check lease details.' },
+        { tool: 'netbox', priority: 'secondary', action: 'Look up the device in NetBox for full details including IP and location.' }
+      ]},
+      { label: "Where is this device physically?", result: [
+        { tool: 'netbox', priority: 'primary', action: 'Search the hostname in NetBox — it should show building, rack, and switch port.' }
+      ]},
+      { label: "Is it having network issues?", result: [
+        { tool: 'akips', priority: 'primary', action: 'Search for the hostname in AKIPS to pull up availability and traffic history.' },
+        { tool: 'infoblox', priority: 'secondary', action: 'Confirm DNS resolution is correct in Infoblox.' }
+      ]}
+    ]
+  },
+  time: {
+    question: "What type of issue was it?",
+    breadcrumb: "Time + location (intermittent issue)",
+    options: [
+      { label: "Network outage or slowness", result: [
+        { tool: 'akips', priority: 'primary', action: 'Check AKIPS historical graphs for that time window — look for interface errors, drops, or utilization spikes.' },
+        { tool: 'netbox', priority: 'secondary', action: 'Use NetBox to identify which switches/APs serve that location.' }
+      ]},
+      { label: "WiFi drops or connection failures", result: [
+        { tool: 'mist', priority: 'primary', action: 'In Mist, check the AP serving that room and filter events by the time of the issue.' },
+        { tool: 'akips', priority: 'secondary', action: 'Check AKIPS for upstream switch issues at that time.' }
+      ]},
+      { label: "DHCP / IP address not assigned", result: [
+        { tool: 'infoblox', priority: 'primary', action: 'Check the DHCP lease log in Infoblox filtered to that time and subnet/scope.' },
+        { tool: 'akips', priority: 'secondary', action: 'Confirm the network was up during that window in AKIPS.' }
+      ]}
+    ]
+  },
+  wifi: {
+    question: "What's the WiFi symptom?",
+    breadcrumb: "WiFi / wireless issue",
+    options: [
+      { label: "Can't connect at all", result: [
+        { tool: 'mist', priority: 'primary', action: 'Look up the client in Mist by MAC or username — check connection events and auth failures.' },
+        { tool: 'infoblox', priority: 'secondary', action: 'Confirm the device is getting a DHCP lease in Infoblox.' }
+      ]},
+      { label: "Slow or drops frequently", result: [
+        { tool: 'mist', priority: 'primary', action: 'Check the AP in Mist for channel utilization, RSSI, and client roaming events.' },
+        { tool: 'akips', priority: 'secondary', action: 'Check AKIPS to see if the AP or its uplink is experiencing issues.' }
+      ]},
+      { label: "AP seems down", result: [
+        { tool: 'akips', priority: 'primary', action: 'Check AKIPS to confirm the AP is unreachable and when it went down.' },
+        { tool: 'mist', priority: 'secondary', action: 'Check AP status in Mist — look for offline status and last check-in time.' },
+        { tool: 'netbox', priority: 'secondary', action: 'Find the AP in NetBox to identify its upstream switch and POE port.' }
+      ]}
+    ]
+  },
+  vlan: {
+    question: "Where are you in the process?",
+    breadcrumb: "VLAN change needed",
+    options: [
+      { label: "I need to confirm which VLAN to use", result: [
+        { tool: 'netbox', priority: 'primary', action: 'Look up the subnet or location in NetBox to find the correct VLAN ID for the target network.' },
+        { tool: 'infoblox', priority: 'secondary', action: 'Check Infoblox to confirm the DHCP scope and range for the target VLAN.' }
+      ]},
+      { label: "Ready to deploy the change", result: [
+        { tool: 'slackbot', priority: 'primary', action: 'Use the Slackbot command in the designated Slack channel to deploy the VLAN change. Include switch, port, and VLAN ID.' },
+        { tool: 'netbox', priority: 'secondary', action: 'Update NetBox after the change to keep the source of truth accurate.' }
+      ]},
+      { label: "Change was made but device still not working", result: [
+        { tool: 'akips', priority: 'primary', action: 'Check AKIPS to confirm the port came back up and the device is reachable.' },
+        { tool: 'infoblox', priority: 'secondary', action: 'Verify the device got a new DHCP lease on the correct subnet in Infoblox.' }
+      ]}
+    ]
+  },
+  switch: {
+    question: "What are you trying to do?",
+    breadcrumb: "Switch / port info",
+    options: [
+      { label: "Check if a port is up or erroring", result: [
+        { tool: 'akips', priority: 'primary', action: 'Find the switch in AKIPS and drill into the interface — check errors, discards, and up/down history.' }
+      ]},
+      { label: "Find what device is on a port", result: [
+        { tool: 'netbox', priority: 'primary', action: 'Look up the switch in NetBox and find the port — it should show the connected device.' },
+        { tool: 'infoblox', priority: 'secondary', action: 'Cross-check in Infoblox using the MAC address of the device on that port.' }
+      ]},
+      { label: "Change the VLAN on a port", result: [
+        { tool: 'slackbot', priority: 'primary', action: 'Use the Slackbot VLAN command to deploy the change. Have your switch name, port, and target VLAN ready.' },
+        { tool: 'netbox', priority: 'secondary', action: 'Update the port record in NetBox after the change.' }
+      ]}
+    ]
+  }
+};
+
+let currentFlow = null;
+
+function choose(flowKey) {
+  currentFlow = flows[flowKey];
+  const f = currentFlow;
+  document.getElementById('s1-breadcrumb').innerHTML = `You have: <span>${f.breadcrumb}</span>`;
+  document.getElementById('s1-question').textContent = f.question;
+  const optDiv = document.getElementById('s1-options');
+  optDiv.innerHTML = '';
+  f.options.forEach(opt => {
+    const btn = document.createElement('button');
+    btn.className = 'opt-btn';
+    btn.innerHTML = `<span class="label">${opt.label}</span>`;
+    btn.onclick = () => showResult(opt);
+    optDiv.appendChild(btn);
+  });
+  setSection(1);
+}
+
+function showResult(opt) {
+  document.getElementById('s2-breadcrumb').innerHTML = `You have: <span>${currentFlow.breadcrumb}</span> › <span>${opt.label}</span>`;
+  const res = document.getElementById('s2-results');
+  res.innerHTML = '';
+  opt.result.forEach(r => res.appendChild(makeResult(r.tool, r.priority, r.action)));
+  setSection(2);
+}
+
+function setSection(n) {
+  [0,1,2].forEach(i => {
+    document.getElementById('s'+i).classList.toggle('active', i === n);
+    const dot = document.getElementById('d'+i);
+    dot.classList.remove('active','done');
+    if (i < n) dot.classList.add('done');
+    else if (i === n) dot.classList.add('active');
+  });
+}
+
+function goBack(n) { setSection(n); }
+function restart() { setSection(0); currentFlow = null; }
+</script>
+</body>
+</html>
