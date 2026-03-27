@@ -13,12 +13,8 @@
   .question { font-size: 17px; font-weight: 600; margin-bottom: 1rem; color: #1a1a1a; }
   .options { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 10px; }
   .opt-btn {
-    background: #fff;
-    border: 1px solid #d0d0d0;
-    border-radius: 10px;
-    padding: 14px 16px;
-    cursor: pointer;
-    text-align: left;
+    background: #fff; border: 1px solid #d0d0d0; border-radius: 10px;
+    padding: 14px 16px; cursor: pointer; text-align: left;
     transition: border-color 0.15s, background 0.15s;
   }
   .opt-btn:hover { border-color: #639922; background: #EAF3DE; }
@@ -26,53 +22,41 @@
   .opt-btn .label { font-size: 14px; font-weight: 600; color: #1a1a1a; display: block; }
   .opt-btn .desc { font-size: 12px; color: #666; margin-top: 2px; display: block; }
   .result-card {
-    background: #fff;
-    border: 1px solid #d0d0d0;
-    border-radius: 10px;
-    padding: 1.25rem;
-    margin-bottom: 12px;
-    border-left: 3px solid #d0d0d0;
+    background: #fff; border: 1px solid #d0d0d0; border-radius: 10px;
+    padding: 1.25rem; margin-bottom: 12px; border-left: 3px solid #d0d0d0;
   }
   .result-card.primary { border-left-color: #639922; }
   .result-card.secondary { border-left-color: #97C459; }
   .tool-badge {
-    display: inline-block;
-    background: #EAF3DE;
-    color: #3B6D11;
-    font-size: 12px;
-    font-weight: 600;
-    padding: 3px 10px;
-    border-radius: 6px;
-    margin-bottom: 8px;
+    display: inline-block; background: #EAF3DE; color: #3B6D11;
+    font-size: 12px; font-weight: 600; padding: 3px 10px; border-radius: 6px; margin-bottom: 8px;
   }
   .tool-badge.secondary { background: #C0DD97; color: #27500A; }
   .result-card h3 { font-size: 15px; font-weight: 600; margin-bottom: 6px; color: #1a1a1a; }
   .result-card p { font-size: 14px; color: #555; line-height: 1.6; }
   .result-card .action { font-size: 13px; color: #3B6D11; font-weight: 600; margin-top: 8px; }
   .back-btn {
-    background: #fff;
-    border: 1px solid #d0d0d0;
-    border-radius: 6px;
-    padding: 8px 16px;
-    font-size: 13px;
-    cursor: pointer;
-    color: #555;
-    margin-top: 1rem;
+    background: #fff; border: 1px solid #d0d0d0; border-radius: 6px;
+    padding: 8px 16px; font-size: 13px; cursor: pointer; color: #555; margin-top: 1rem;
   }
   .back-btn:hover { background: #f5f5f5; }
   .restart-btn {
-    background: #639922;
-    border: none;
-    border-radius: 6px;
-    padding: 8px 18px;
-    font-size: 13px;
-    cursor: pointer;
-    color: #fff;
-    font-weight: 600;
-    margin-top: 1rem;
-    margin-left: 8px;
+    background: #639922; border: none; border-radius: 6px; padding: 8px 18px;
+    font-size: 13px; cursor: pointer; color: #fff; font-weight: 600;
+    margin-top: 1rem; margin-left: 8px;
   }
   .restart-btn:hover { background: #3B6D11; }
+  .submit-btn {
+    background: #00693E; border: none; border-radius: 6px; padding: 8px 18px;
+    font-size: 13px; cursor: pointer; color: #fff; font-weight: 600;
+    margin-top: 1rem; margin-left: 8px; display: inline-flex; align-items: center; gap: 6px;
+  }
+  .submit-btn:hover { background: #004d2c; }
+  .copy-toast {
+    display: none; background: #1a1a1a; color: #fff; font-size: 12px; font-weight: 600;
+    padding: 6px 14px; border-radius: 6px; margin-top: 10px; width: fit-content;
+  }
+  .copy-toast.show { display: inline-block; }
   .progress { display: flex; gap: 6px; margin-bottom: 1.5rem; align-items: center; }
   .prog-dot { width: 8px; height: 8px; border-radius: 50%; background: #C0DD97; }
   .prog-dot.active { background: #639922; }
@@ -80,16 +64,46 @@
   .section { display: none; }
   .section.active { display: block; }
   .breadcrumb {
-    font-size: 13px;
-    color: #555;
-    margin-bottom: 1.25rem;
-    padding: 8px 12px;
-    background: #f5f5f5;
-    border-radius: 6px;
+    font-size: 13px; color: #555; margin-bottom: 1.25rem;
+    padding: 8px 12px; background: #f5f5f5; border-radius: 6px;
   }
   .breadcrumb span { color: #3B6D11; font-weight: 600; }
   .header-row { display: flex; align-items: center; gap: 10px; margin-bottom: 4px; }
-  .logo-circle { width: 30px; height: 30px; border-radius: 50%; background: #EAF3DE; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .logo-circle {
+    width: 30px; height: 30px; border-radius: 50%; background: #EAF3DE;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+
+  /* TDX form styles */
+  .tdx-card {
+    background: #f9f9f9; border: 1px solid #d0d0d0; border-radius: 10px;
+    padding: 1.25rem; margin-bottom: 12px;
+  }
+  .tdx-card h3 { font-size: 15px; font-weight: 600; margin-bottom: 4px; color: #1a1a1a; }
+  .tdx-card .tdx-sub { font-size: 13px; color: #666; margin-bottom: 1rem; }
+  .form-row { margin-bottom: 12px; }
+  .form-row label { display: block; font-size: 12px; font-weight: 600; color: #444; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.04em; }
+  .form-row input, .form-row textarea, .form-row select {
+    width: 100%; padding: 8px 10px; border: 1px solid #d0d0d0; border-radius: 6px;
+    font-size: 14px; font-family: inherit; background: #fff; color: #1a1a1a;
+  }
+  .form-row input:focus, .form-row textarea:focus, .form-row select:focus {
+    outline: none; border-color: #639922; box-shadow: 0 0 0 2px #EAF3DE;
+  }
+  .form-row textarea { resize: vertical; min-height: 80px; }
+  .form-row .hint { font-size: 11px; color: #888; margin-top: 3px; }
+  .optional-tag {
+    display: inline-block; background: #eee; color: #777;
+    font-size: 10px; font-weight: 600; padding: 1px 6px; border-radius: 4px;
+    margin-left: 6px; text-transform: uppercase; vertical-align: middle;
+  }
+  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .divider { border: none; border-top: 1px solid #e5e5e5; margin: 1rem 0; }
+  .tdx-note {
+    font-size: 12px; color: #666; background: #EAF3DE; border-radius: 6px;
+    padding: 8px 12px; margin-bottom: 1rem; line-height: 1.5;
+  }
+  .tdx-note strong { color: #3B6D11; }
 </style>
 </head>
 <body>
@@ -112,6 +126,7 @@
   <div class="prog-dot active" id="d0"></div>
   <div class="prog-dot" id="d1"></div>
   <div class="prog-dot" id="d2"></div>
+  <div class="prog-dot" id="d3"></div>
 </div>
 
 <!-- Step 0 -->
@@ -179,6 +194,75 @@
   <div>
     <button class="back-btn" onclick="goBack(1)">← Back</button>
     <button class="restart-btn" onclick="restart()">Start over</button>
+    <button class="submit-btn" onclick="goToTicket()">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M7 2l5 5-5 5" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Submit ticket to Network Services
+    </button>
+  </div>
+</div>
+
+<!-- Step 3: TDX Ticket Form -->
+<div id="s3" class="section">
+  <div id="s3-breadcrumb" class="breadcrumb"></div>
+  <div class="step-label">Submit to Network Services</div>
+  <div class="question">Fill in what you know — then open the TDX ticket</div>
+
+  <div class="tdx-note">
+    <strong>How this works:</strong> Fill in the details below and click "Copy &amp; Open TDX Ticket." Your ticket details will be <strong>copied to your clipboard</strong> and the TDX form will open in a new tab — just paste into the Description field and submit to Network Services.
+  </div>
+
+  <div class="tdx-card">
+    <h3>Ticket Details</h3>
+    <p class="tdx-sub">Fill in what you have — nothing here is required.</p>
+
+    <div class="form-row">
+      <label>Title / Short Description</label>
+      <input type="text" id="f-title" placeholder="e.g. User in Sudikoff 101 can't connect to wired network" />
+    </div>
+
+    <div class="form-grid">
+      <div class="form-row">
+        <label>Affected NetID <span class="optional-tag">optional</span></label>
+        <input type="text" id="f-netid" placeholder="e.g. f00xyz" />
+      </div>
+      <div class="form-row">
+        <label>Building / Room <span class="optional-tag">optional</span></label>
+        <input type="text" id="f-location" placeholder="e.g. Sudikoff 101" />
+      </div>
+    </div>
+
+    <div class="form-grid">
+      <div class="form-row">
+        <label>IP Address <span class="optional-tag">optional</span></label>
+        <input type="text" id="f-ip" placeholder="e.g. 129.170.x.x" />
+      </div>
+      <div class="form-row">
+        <label>MAC Address <span class="optional-tag">optional</span></label>
+        <input type="text" id="f-mac" placeholder="e.g. aa:bb:cc:dd:ee:ff" />
+      </div>
+    </div>
+
+    <div class="form-row">
+      <label>Hostname / Device Name <span class="optional-tag">optional</span></label>
+      <input type="text" id="f-hostname" placeholder="e.g. dart-12345" />
+    </div>
+
+    <hr class="divider">
+
+    <div class="form-row">
+      <label>Description / What's happening</label>
+      <textarea id="f-desc" placeholder="Describe the issue — symptoms, what you've already tried, any error messages..."></textarea>
+    </div>
+  </div>
+
+  <div>
+    <button class="back-btn" onclick="goBack(2)">← Back</button>
+    <button class="restart-btn" onclick="restart()">Start over</button>
+    <button class="submit-btn" onclick="openTDX()">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 2h10v10H2z" stroke="#fff" stroke-width="1.2"/><path d="M5 7h4M7 5v4" stroke="#fff" stroke-width="1.2" stroke-linecap="round"/></svg>
+      Copy &amp; Open TDX Ticket
+    </button>
+    <div id="copy-toast" class="copy-toast">✓ Details copied to clipboard — paste into the Description field</div>
   </div>
 </div>
 
@@ -352,6 +436,68 @@ const flows = {
 };
 
 let currentFlow = null;
+let currentOpt = null;
+
+// ── TDX config ──────────────────────────────────────────────────────────────
+// Replace these with your real TDX values:
+const TDX_URL = 'https://services.dartmouth.edu/TDClient/1806/Portal/Requests/TicketRequests/NewForm?ID=u~Xhs4my4DY_';
+
+function buildTicketBody() {
+  const title    = document.getElementById('f-title').value.trim();
+  const netid    = document.getElementById('f-netid').value.trim();
+  const location = document.getElementById('f-location').value.trim();
+  const ip       = document.getElementById('f-ip').value.trim();
+  const mac      = document.getElementById('f-mac').value.trim();
+  const hostname = document.getElementById('f-hostname').value.trim();
+  const desc     = document.getElementById('f-desc').value.trim();
+  const path     = currentFlow && currentOpt ? `${currentFlow.breadcrumb} › ${currentOpt.label}` : '';
+
+  let body = `[Via Network Troubleshooting Navigator]\n`;
+  if (path)     body += `Path taken: ${path}\n`;
+  body += `\n--- Details ---\n`;
+  if (netid)    body += `Affected NetID: ${netid}\n`;
+  if (location) body += `Building/Room:  ${location}\n`;
+  if (ip)       body += `IP Address:     ${ip}\n`;
+  if (mac)      body += `MAC Address:    ${mac}\n`;
+  if (hostname) body += `Hostname:       ${hostname}\n`;
+  if (desc)     body += `\nAdditional info:\n${desc}`;
+  return { title: title || `Network issue${location ? ' — ' + location : ''}`, body };
+}
+
+function openTDX() {
+  const { title, body } = buildTicketBody();
+  const full = `Title: ${title}\n\n${body}`;
+  navigator.clipboard.writeText(full).catch(() => {
+    // fallback: select a hidden textarea
+    const ta = document.createElement('textarea');
+    ta.value = full;
+    ta.style.position = 'fixed'; ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+  });
+  const toast = document.getElementById('copy-toast');
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 4000);
+  window.open(TDX_URL, '_blank');
+}
+
+function preloadForm() {
+  if (!currentFlow || !currentOpt) return;
+  const loc  = document.getElementById('f-location');
+  const desc = document.getElementById('f-desc');
+  // Pre-fill location if user came via building flow
+  if (currentFlow.breadcrumb === 'Building / room' && !loc.value) {
+    // leave blank — they'll fill it
+  }
+  // Pre-fill a description hint based on path
+  if (!desc.value) {
+    desc.value = `Issue type: ${currentFlow.breadcrumb} › ${currentOpt.label}\n\nAdditional details: `;
+    // Move cursor to end
+    desc.setSelectionRange(desc.value.length, desc.value.length);
+  }
+}
 
 function choose(flowKey) {
   currentFlow = flows[flowKey];
@@ -371,15 +517,28 @@ function choose(flowKey) {
 }
 
 function showResult(opt) {
-  document.getElementById('s2-breadcrumb').innerHTML = `You have: <span>${currentFlow.breadcrumb}</span> › <span>${opt.label}</span>`;
+  currentOpt = opt;
+  document.getElementById('s2-breadcrumb').innerHTML =
+    `You have: <span>${currentFlow.breadcrumb}</span> › <span>${opt.label}</span>`;
   const res = document.getElementById('s2-results');
   res.innerHTML = '';
   opt.result.forEach(r => res.appendChild(makeResult(r.tool, r.priority, r.action)));
   setSection(2);
 }
 
+function goToTicket() {
+  document.getElementById('s3-breadcrumb').innerHTML =
+    `You have: <span>${currentFlow.breadcrumb}</span> › <span>${currentOpt.label}</span>`;
+  // Reset form fields except desc hint
+  ['f-title','f-netid','f-location','f-ip','f-mac','f-hostname','f-desc'].forEach(id => {
+    document.getElementById(id).value = '';
+  });
+  preloadForm();
+  setSection(3);
+}
+
 function setSection(n) {
-  [0,1,2].forEach(i => {
+  [0,1,2,3].forEach(i => {
     document.getElementById('s'+i).classList.toggle('active', i === n);
     const dot = document.getElementById('d'+i);
     dot.classList.remove('active','done');
@@ -389,7 +548,7 @@ function setSection(n) {
 }
 
 function goBack(n) { setSection(n); }
-function restart() { setSection(0); currentFlow = null; }
+function restart() { setSection(0); currentFlow = null; currentOpt = null; }
 </script>
 </body>
 </html>
